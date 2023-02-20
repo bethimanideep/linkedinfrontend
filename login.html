@@ -7,6 +7,12 @@
     <title>Document</title>
 </head>
 <body>
+    <nav>
+        <div>
+            <button id="postspage">AddPost</button>
+            <button id="signup">Signup</button>
+        </div>
+    </nav>
     <div>
         <form>
             <input id="name" type="text" placeholder="username">
@@ -19,6 +25,17 @@
     let name=document.getElementById("name")
     let password=document.getElementById("password")
     let btn=document.getElementById("btn")
+    let postspage=document.getElementById("postspage")
+    let signup=document.getElementById("signup")
+
+    postspage.addEventListener("click",()=>{
+        window.location.href="./postpage.html"
+
+    })
+    signup.addEventListener("click",()=>{
+        window.location.href="./signup.html"
+
+    })
     btn.addEventListener("click",()=>{
         let data={
             name:name.value,

@@ -9,6 +9,12 @@
 </head>
 
 <body>
+    <nav>
+        <div>
+            <button id="postspage">AddPost</button>
+            <button id="login">Login</button>
+        </div>
+    </nav>
     <div>
         <form>
             <input id="name" type="text" placeholder="Name" required>
@@ -29,6 +35,17 @@
     let age = document.getElementById("age")
     let placeholder = document.getElementById("placeholder")
     let btn = document.getElementById("btn")
+    let postspage=document.getElementById("postspage")
+    let login=document.getElementById("login")
+
+    postspage.addEventListener("click",()=>{
+        window.location.href="./postpage.html"
+
+    })
+    login.addEventListener("click",()=>{
+        window.location.href="./login.html"
+
+    })
     btn.addEventListener("click", () => {
         let data = {
             name: name.value,
