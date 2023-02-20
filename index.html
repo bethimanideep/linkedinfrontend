@@ -9,9 +9,10 @@
 </head>
 
 <body>
+    
     <nav>
         <div>
-            
+
             <div id="logout">
             </div>
             <button id="postspage">AddPost</button>
@@ -19,6 +20,9 @@
             <button id="login">Login</button>
         </div>
     </nav>
+    <div>
+        <p id="ptag" style="color: red;">Please LOGIN OR SIGNUP</p>
+    </div>
     <div>
         <table>
 
@@ -38,12 +42,15 @@
     </div>
 </body>
 <script>
-    let posts = document.getElementById("posts")
+    let ptag = document.getElementById("ptag")
     let name = localStorage.getItem("username")
     let signup = document.getElementById("signup")
     let logout = document.getElementById("logout")
     let login = document.getElementById("login")
     let addpost = document.getElementById("postspage")
+    if(name){
+        ptag.innerHTML=null
+    }
     if (name) {
         let btn = document.createElement("button")
         btn.innerText = "LOGOUT"
@@ -76,23 +83,98 @@
         .then(res => res.json())
         .then((res) => {
             if (name) {
-                for (let i = 0; i < res.length; i++) {
-                    let tr = document.createElement("tr")
-                    let td1 = document.createElement("td")
-                    let td2 = document.createElement("td")
-                    let td3 = document.createElement("td")
-                    let td4 = document.createElement("td")
-                    td1.innerText = res[i].name
-                    td2.innerText = res[i].title
-                    td3.innerText = res[i].comment
-                    td4.innerText = res[i].device
-                    tr.append(td1, td2, td3, td4)
-                    posts.append(tr)
-                }
+                createdata(res)
             }
 
         })
         .catch(err => console.log(err))
+
+
+
+
+    function createdata(res) {
+        posts.innerHTML = null
+        for (let i = 0; i < res.length; i++) {
+            let tr = document.createElement("tr")
+            let td1 = document.createElement("td")
+            let td2 = document.createElement("td")
+            let td3 = document.createElement("td")
+            let td4 = document.createElement("td")
+            let td5 = document.createElement("td")
+            let td6 = document.createElement("td")
+            let select = document.createElement("select")
+            let o1 = document.createElement("option")
+            let o2 = document.createElement("option")
+            let o3 = document.createElement("option")
+            let o4 = document.createElement("option")
+            let input = document.createElement("input")
+            o1.innerText = "name"
+            o2.innerText = "title"
+            o3.innerText = "comment"
+            o4.innerText = "device"
+            o1.setAttribute("value", "name")
+            o2.setAttribute("value", "title")
+            o3.setAttribute("value", "comment")
+            o4.setAttribute("value", "device")
+            select.append(o1, o2, o3, o4)
+
+            let button = document.createElement("button")
+            let updatebtn = document.createElement("button")
+
+            td1.innerText = res[i].name
+            td2.innerText = res[i].title
+            td3.innerText = res[i].comment
+            td4.innerText = res[i].device
+            button.innerText = "DELETE"
+            updatebtn.innerText = "UPDATE YOUR POST"
+            button.addEventListener("click", () => {
+                let data = {
+                    name: name,
+                    index: i
+                }
+                fetch("https://tame-blue-bass-gown.cyclic.app/app/posts/delete", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .then((res) => {
+                        createdata(res)
+                    })
+                    .catch(err => console.log(err))
+            })
+
+            updatebtn.addEventListener("click", () => {
+                console.log(input.value);
+                let data = {
+                    name: name,
+                    index: i,
+                    key:select.value,
+                    input:input.value
+                }
+                fetch("https://tame-blue-bass-gown.cyclic.app/app/posts/update", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .then((res) => {
+                        createdata(res)
+                    })
+                    .catch(err => console.log(err))
+
+
+            })
+            td5.append(button)
+            td6.append(updatebtn)
+            tr.append(td1, td2, td3, td4, td5, select,input, td6)
+            posts.append(tr)
+        }
+    }
 </script>
 
 </html>
