@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <form action="">
+            <input id="title" type="text" placeholder="Title">
+            <input id="comment" type="text" placeholder="provide a comment">
+            <input id="device" type="text" placeholder="Device name">
+            <input id="count" type="number" placeholder="No.of comments">
+        </form>
+        <button id="btn">Add Post</button>
+    </div>
+</body>
+<script>
+    let title=document.getElementById("title")
+    let comment=document.getElementById("comment")
+    let device=document.getElementById("device")
+    let count=document.getElementById("count")
+    let btn=document.getElementById("btn")
+    btn.addEventListener("click",()=>{
+        let name=localStorage.getItem("username")
+        let data={
+            name:name,
+            title:title.value,
+            comment:comment.value,
+            device:device.value,
+            count:count.value
+        }
+        fetch("https://tame-blue-bass-gown.cyclic.app/app/users/addpost",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(data)
+        })
+        .then(res=>res.json())
+        .then((res)=>{
+            if(res=="postadded"){
+                alert("Post Added")
+                window.location.href="./index.html"
+            }            
+        })
+        .catch(err=>console.log(err))
+    })
+</script>
+</html>

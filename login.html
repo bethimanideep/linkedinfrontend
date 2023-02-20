@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <form>
+            <input id="name" type="text" placeholder="username">
+            <input id="password" type="text" placeholder="password">
+        </form>
+        <button id="btn">Login</button>
+    </div>
+</body>
+<script>
+    let name=document.getElementById("name")
+    let password=document.getElementById("password")
+    let btn=document.getElementById("btn")
+    btn.addEventListener("click",()=>{
+        let data={
+            name:name.value,
+            password:password.value
+        }
+        fetch("https://tame-blue-bass-gown.cyclic.app/app/users/login",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(data)
+        })
+        .then(res=>res.json())
+        .then((res)=>{
+            if(res=="notfound"){
+                alert("Please Register")
+            }else if(res=="passwordwrong"){
+                alert("passwordwrong")
+            }else{
+                localStorage.setItem("username",res)
+                alert("Login successful")
+                window.location.href="./index.html"
+            }
+        })
+        .catch(err=>console.log(err))
+    })
+</script>
+</html>
